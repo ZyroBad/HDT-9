@@ -1,17 +1,21 @@
 
+# David Sebastian Lemus Nitsch (241155)
+# Luis Alejandro Hernández Márquez (241424)
+# Sección: 20
+
 import heapq
 import os
 import pickle
 from collections import defaultdict, Counter
 
 class HuffmanNode:
-    def __init__(self, char=None, freq=0):
+    def _init_(self, char=None, freq=0):
         self.char = char
         self.freq = freq
         self.left = None
         self.right = None
 
-    def __lt__(self, other):
+    def _lt_(self, other):
         return self.freq < other.freq
 
 def build_frequency_table(text):
@@ -69,15 +73,15 @@ def compress(input_path):
     root = build_huffman_tree(freq_table)
     codes = build_codes(root)
     encoded_text = encode_text(text, codes)
-    padded_text = pad_encoded_text(encoded_text)
-    byte_array = get_byte_array(padded_text)
+    padded_textl = pad_encoded_text(encoded_text)
+    byte_array = get_byte_array(padded_textl)
 
     with open(input_path + '.huff', 'wb') as output:
         output.write(byte_array)
 
     with open(input_path + '.hufftree', 'wb') as tree_file:
         pickle.dump(root, tree_file)
-
+        
 def remove_padding(padded_encoded_text):
     padded_info = padded_encoded_text[:8]
     extra_padding = int(padded_info, 2)
@@ -116,12 +120,12 @@ def decompress(huff_path, tree_path):
 
     return output_path
 
-if __name__ == "__main__":
-    archivo = "ejemplo.txt"
 
-    compress(archivo)
+archivo = "ejemplo.txt"
 
-    if os.path.exists(archivo + ".huff") and os.path.exists(archivo + ".hufftree"):
-        salida = decompress(archivo + ".huff", archivo + ".hufftree")
-        if salida:
-            print(f"Archivo descomprimido: {salida}")
+compress(archivo)
+
+if os.path.exists(archivo + ".huff") and os.path.exists(archivo + ".hufftree"):
+    salida = decompress(archivo + ".huff", archivo + ".hufftree")
+    if salida:
+        print(f"Archivo descomprimido: {salida}")
